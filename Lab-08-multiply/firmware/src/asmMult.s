@@ -76,6 +76,64 @@ asmMult:
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
     
+    LDR R2, =a_Multiplicand
+    LDR R3, =b_Multiplier
+    LDR R4, =rng_Error
+    LDR R5, =a_Sign
+    LDR R6, =b_Sign
+    LDR R7, =prod_Is_Neg
+    LDR R8, =a_Abs
+    LDR R9, =b_Abs
+    LDR R10, =init_Product
+    LDR R11, =final_Product
+    MOV R12, #0
+    STR R12, [R2]
+    STR R12, [R3]
+    STR R12, [R4]
+    STR R12, [R5]
+    STR R12, [R6]
+    STR R12, [R7]
+    STR R12, [R8]
+    STR R12, [R9]
+    STR R12, [R10]
+    STR R12, [R11]   
+    
+    STR R0, [R2]
+    STR R1, [R3]
+    
+    AND R2, R0, #10000000
+    CMP R2, #10000000
+    BEQ negative_case
+    positive_case:
+	AND R2, R0, #7FFF0000
+	CMP R2, #00000000
+	BNE set_rng_error
+	B out
+    negative_case:
+	AND R2, R0, #FFFF8000
+	CMP R2, #FFFF8000
+	BNE set_rng_error
+    out:
+    
+    
+    
+    /*STEP 5-8 ?*/
+    
+    
+    
+    
+    
+    
+    
+    set_rng_error:
+	STR R0,[R12]
+	MOV R12, #1
+	STR R4, [R12]
+	B done
+    
+    
+    
+    
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
