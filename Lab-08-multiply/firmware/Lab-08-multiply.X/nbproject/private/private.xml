@@ -14,6 +14,8 @@
         <group>
             <file>file:/C:/Users/harry/OneDrive/Documents/GitHub/CISC-211-Lab-08-Multiply-Zicheng-Wang/Lab-08-multiply/firmware/src/asmMult.s</file>
             <file>file:/C:/Users/harry/OneDrive/Documents/GitHub/CISC-211-Lab-08-Multiply-Zicheng-Wang/Lab-08-multiply/firmware/src/main.c</file>
+            <file>file:/C:/Users/harry/OneDrive/Documents/GitHub/CISC-211-Lab-08-Multiply-Zicheng-Wang/Lab-08-multiply/firmware/Lab-08-multiply.X/nbproject/Makefile-impl.mk</file>
+            <file>file:/C:/Users/harry/OneDrive/Documents/GitHub/CISC-211-Lab-08-Multiply-Zicheng-Wang/Lab-08-multiply/firmware/Lab-08-multiply.X/nbproject/Makefile-sam_e51_cnano.mk</file>
         </group>
     </open-files>
 </project-private>

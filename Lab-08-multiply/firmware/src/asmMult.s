@@ -76,65 +76,118 @@ asmMult:
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
     
-    LDR R2, =a_Multiplicand
-    LDR R3, =b_Multiplier
-    LDR R4, =rng_Error
-    LDR R5, =a_Sign
-    LDR R6, =b_Sign
-    LDR R7, =prod_Is_Neg
-    LDR R8, =a_Abs
-    LDR R9, =b_Abs
-    LDR R10, =init_Product
-    LDR R11, =final_Product
-    MOV R12, #0
-    STR R12, [R2]
-    STR R12, [R3]
-    STR R12, [R4]
-    STR R12, [R5]
-    STR R12, [R6]
-    STR R12, [R7]
-    STR R12, [R8]
-    STR R12, [R9]
-    STR R12, [R10]
-    STR R12, [R11]   
+    LDR r2, =a_Multiplicand
+    LDR r3, =b_Multiplier
+    LDR r4, =rng_Error
+    LDR r5, =a_Sign
+    LDR r6, =b_Sign
+    MOV r7, 0
+    STR r7,[r2]
+    STR r7,[r3]
+    STR r7,[r4]
+    STR r7,[r5]
+    STR r7,[r6]
     
-    STR R0, [R2]
-    STR R1, [R3]
+    STR r0, [R2]
+    STR r1, [R3]
     
-    AND R2, R0, #10000000
-    CMP R2, #10000000
-    BEQ negative_case
-    positive_case:
-	AND R2, R0, #7FFF0000
-	CMP R2, #00000000
-	BNE set_rng_error
-	B out
-    negative_case:
-	AND R2, R0, #FFFF8000
-	CMP R2, #FFFF8000
-	BNE set_rng_error
-    out:
+    LDR r7, = -32767
+    CMP r0,r7
+    BLT out_of_rang
+    CMP r1,r7
+    BLT out_of_rang
     
+    LDR r7, = 32767
+    CMP r0,r7
+    BGT out_of_rang
+    CMP r1,r7
+    BGT out_of_rang
     
+    LSR r7,r0, 31
+    LSR r8,r1, 31
     
-    /*STEP 5-8 ?*/
+    LDR r9, =prod_Is_Neg
+    MOV r11, 0
+    STR r11,[r9]
     
+    STR r7,[r5]
+    STR r8,[r6]
+    TEQ r7,r8 
+    BNE get_negative_answer
+    continue:
     
+    LDR r2, =a_Abs
+    LDR r3, =b_Abs
+
+    CMP r7,1
+    BEQ neg_abs_A
+    STR r0,[r2]
+    MOV r2,r0
+    continue2:
+    CMP r8,1
+    BEQ neg_abs_B
+    STR r1,[r3]
+    MOV r3,r1
+    continue3:
     
+    do:
+	CMP r3,0
+	BEQ can_not_Multiplication
+	TST r3,1 
+	BEQ proudct_increase
+	continue4:
+	LSL r3,r3,1
+	LSR r2,r2,1	
+	B do
+	
+    get_negative_answer:
+	
+	MOV r11, 1
+	STR r11,[r9]
+	B continue
     
+    out_of_rang:
+	MOV r7,1
+	STR r7,[r4]
+	MOV r0,0
+	
+    neg_abs_A:
+	SUB r0,r0,1
+	MVN r7,r0
+	STR r7,[r2]
+	MOV r2,r7
+	B continue2
+	
+    neg_abs_B:
+	SUB r1,r1,1
+	MVN r8,r1
+	STR r8,[r3]
+	B continue3
     
+    proudct_increase:
+	LDR r10 , =init_Product
+	MOV r11, 0
+	ADD r11,r11,r2
+	STR r11,[r10]
+	B continue4
+	
+    can_not_Multiplication:
+	LDR r12 , =final_Product
+	LDR r11,[r9]
+	CMP r11,1
+	BEQ change_To_negative
+	B final_step
+	
+    change_To_negative:
     
-    
-    set_rng_error:
-	STR R0,[R12]
-	MOV R12, #1
-	STR R4, [R12]
+	LDR r11,[r10]
+	MVN r11,r11
+	ADD r11,r11,1
+	STR r11,[r12]
+    final_step:
+	MOV r0,r11
 	B done
-    
-    
-    
-    
-    
+	
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
 done:    
