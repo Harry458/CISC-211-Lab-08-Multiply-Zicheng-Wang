@@ -91,7 +91,7 @@ asmMult:
     STR r0, [R2]
     STR r1, [R3]
     
-    LDR r7, = -32767
+    LDR r7, = -32768
     CMP r0,r7
     BLT out_of_rang
     CMP r1,r7
@@ -112,10 +112,14 @@ asmMult:
     
     STR r7,[r5]
     STR r8,[r6]
+    CMP r0,0
+    BEQ skip_Line
+    CMP r1,0
+    BEQ skip_Line
     TEQ r7,r8 
     BNE get_negative_answer
     continue:
-    
+ 
     LDR r2, =a_Abs
     LDR r3, =b_Abs
 
@@ -129,17 +133,23 @@ asmMult:
     STR r1,[r3]
     MOV r3,r1
     continue3:
-    
+    LDR r10 , =init_Product
+    LDR r12 , =final_Product
+    MOV r11, 0
+    STR r11,[r10]
+    STR r11,[r12]
     do:
 	CMP r3,0
 	BEQ can_not_Multiplication
-	TST r3,1 
+	TST r3,0 
 	BEQ proudct_increase
 	continue4:
-	LSL r3,r3,1
-	LSR r2,r2,1	
+	LSR r3,r3,1
+	LSL r2,r2,1	
 	B do
 	
+    skip_Line:
+	B continue
     get_negative_answer:
 	
 	MOV r11, 1
@@ -165,14 +175,11 @@ asmMult:
 	B continue3
     
     proudct_increase:
-	LDR r10 , =init_Product
-	MOV r11, 0
 	ADD r11,r11,r2
 	STR r11,[r10]
 	B continue4
 	
     can_not_Multiplication:
-	LDR r12 , =final_Product
 	LDR r11,[r9]
 	CMP r11,1
 	BEQ change_To_negative
